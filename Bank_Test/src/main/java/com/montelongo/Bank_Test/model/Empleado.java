@@ -16,6 +16,17 @@ public class Empleado extends Usuario{
     private Float mouthlySalary;
     private Integer salesNumber;
 
+    public Empleado(Integer id, String name, String lastName,
+                    Integer numberPhone, String addressStore,
+                    String numEmployee, String areaEmployee,
+                    Float mouthlySalary, Integer salesNumber) {
+        super(id, name, lastName, numberPhone, addressStore);
+        this.numEmployee = numEmployee;
+        this.areaEmployee = areaEmployee;
+        this.mouthlySalary = mouthlySalary;
+        this.salesNumber = salesNumber;
+    }
+
     @Override
     public String RegisterDate() {
         return "RegisterDate{"
