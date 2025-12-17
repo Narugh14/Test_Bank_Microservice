@@ -1,8 +1,10 @@
 package com.montelongo.Bank_Test.service;
 
-import com.montelongo.Bank_Test.dto.ClienteDTO;
-import com.montelongo.Bank_Test.model.Cliente;
+import com.montelongo.Bank_Test.dto.Cliente.ClienteDetalleResponseDTO;
+import com.montelongo.Bank_Test.dto.Cliente.ClienteRegisterRequestDTO;
+import com.montelongo.Bank_Test.domain.Cliente;
 import com.montelongo.Bank_Test.repository.ClienteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +16,48 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clientRepo;
 
-    public ClienteDTO obtenerClienteId(Integer id){
-        Optional<Cliente> cliente = clientRepo.findById(id);
-        if(!cliente.isPresent()) return null;
+    public ClienteService(ClienteRepository clientRepo) {
+        this.clientRepo = clientRepo;
+    }
 
-        Cliente c = cliente.get();
-        return new ClienteDTO(
-                c.getId(),
-                c.getName(),
-                c.getAddressStore(),
-                c.getNumClient(),
-                c.getTypeClient());
+    public ClienteDetalleResponseDTO obtenerClienteId(Integer id){
+       Cliente client= clientRepo.findById(id)
+                .orElseThrow(() ->
+                        new EntityNotFoundException(
+                                "Cliente no encontrado con id: " + id
+                        )
+                );
+       return new ClienteDetalleResponseDTO(
+                client.getId(),
+                client.getName(),
+                client.getAddressStore(),
+                client.getNumClient(),
+                client.getTypeClient()
+       );
+    }
+
+    public ClienteDetalleResponseDTO registrarCliente(ClienteRegisterRequestDTO dto){
+        Cliente clienteSave = new Cliente(
+                null,
+                dto.name(),
+                dto.lastname(),
+                dto.numberPhone(),
+                dto.addressStore(),
+                dto.numCliente(),
+                dto.birthdate(),
+                dto.typeClient(),
+                dto.email(),
+                dto.addressClient(),
+                dto.codePostal()
+        );
+        clientRepo.save(clienteSave);
+        Optional<Cliente> client = clientRepo.findById(clienteSave.getId());
+        if(!client.isPresent()) return null;
+        return new ClienteDetalleResponseDTO(
+                client.get().getId(),
+                client.get().getName(),
+                client.get().getAddressStore(),
+                client.get().getNumClient(),
+                client.get().getTypeClient());
     }
 }
