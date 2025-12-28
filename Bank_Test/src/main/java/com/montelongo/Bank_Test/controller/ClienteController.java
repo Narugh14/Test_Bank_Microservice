@@ -1,6 +1,7 @@
 package com.montelongo.Bank_Test.controller;
 
 import com.montelongo.Bank_Test.dto.Cliente.ClienteDetalleResponseDTO;
+import com.montelongo.Bank_Test.dto.Cliente.ClienteEditarRequestDTO;
 import com.montelongo.Bank_Test.dto.Cliente.ClienteRegisterRequestDTO;
 import com.montelongo.Bank_Test.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,14 +18,24 @@ public class ClienteController {
     private ClienteService clientService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteDetalleResponseDTO> obtenerCliente(@PathVariable Integer id){
+    public ResponseEntity<ClienteDetalleResponseDTO> obtenerClienteId(@PathVariable Integer id){
         return ResponseEntity.ok(clientService.obtenerClienteId(id));
     }
 
-    @Transactional
     @PostMapping
-    public ResponseEntity<ClienteDetalleResponseDTO> registrarCliente(@RequestBody @Valid ClienteRegisterRequestDTO datos){
+    public ResponseEntity<ClienteDetalleResponseDTO> registrar(@RequestBody @Valid ClienteRegisterRequestDTO datos){
        return ResponseEntity.ok(clientService.registrarCliente(datos));
+    }
+
+    @PutMapping("/{numClient}")
+    public ResponseEntity<ClienteDetalleResponseDTO> editar(@PathVariable Integer numClient,@RequestBody @Valid ClienteEditarRequestDTO datos){
+        return ResponseEntity.ok(clientService.editarCliente(datos, numClient));
+    }
+
+    @DeleteMapping("/{numClient}")
+    public ResponseEntity eliminar(@PathVariable Integer numCliente){
+        clientService.eliminarCliente(numCliente);
+        return ResponseEntity.noContent().build();
     }
 
 }

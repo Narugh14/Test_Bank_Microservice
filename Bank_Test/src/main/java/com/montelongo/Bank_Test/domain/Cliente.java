@@ -29,21 +29,21 @@ public class Cliente {
     @Column(name = "addressStore")
     private String addressStore;
 
-    @Column(name = "num_client", unique = true)
+    @Column(name = "numClient", unique = true)
     private Integer numClient;
 
     @Column(name = "birthdate")
     private String birthdate;
 
-    @Column(name = "type_client")
+    @Column(name = "typeClient")
     private String typeClient;
 
     @Column(name = "email", unique = true)
     private String email;
 
-    @Column(name = "address_client")
+    @Column(name = "addressClient")
     private String addressClient;
 
-    @Column(name = "code_postal")
+    @Column(name = "codePostal")
     private Integer codePostal;
 }
